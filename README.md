@@ -21,3 +21,7 @@ In particular, we can:
 2. Microservices - can be done with `Microsoft.Extensions.Hosting.BackgroundService`.
 3. Event bus - any simple event bus, preferably an in-memory one, so events don't need to be serializable - you can try out https://github.com/kuba1/EventBus.
 4. Automated testing - unit testing and mocking libraries, e.g. Xunit and Moq or any of the alternatives.
+
+# Pitfalls
+Challenges you might encounter working with this design include:
+1. High concurrency - each microservice (`BackgroundService`) runs in asynchronous thread/task. Each event handler might also run in a separate task. In addition, each microservice might start additional tasks with `Task.Run(...)`. This makes writing integration tests quite tricky, makes it necessary to pay particular care to handling cancellation tokens properly and makes being constantly aware about concurrency a must.
